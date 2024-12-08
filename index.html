@@ -9,7 +9,7 @@
 <body>
 <div class="container">
   <form id="telegram-form">
-    <p>Заполните форму №39</p>
+    <p>Заполните форму №40</p>
     <input type="text" id="name" placeholder="Ваше имя" required><br>
     <input type="tel" id="phone" placeholder="Ваш номер телефона" required><br>
     <input type="submit" value="Отправить"><br>
@@ -18,36 +18,32 @@
 
 <script>
 
-    const SERVER_URL = "https://bot-production-57ca.up.railway.app/send-message";
+const SERVER_URL = "https://bot-production-57ca.up.railway.app/send-message";
 
-  document.getElementById('telegram-form').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
+document.getElementById('telegram-form').addEventListener('submit', async function(event) {
+  event.preventDefault();
 
-    const requestBody = {
-      name: name,
-      phone: phone,
-    };
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const message = "Сообщение с формы";
 
-    try {
-      const response = await fetch(SERVER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      });
+  try {
+    const response = await fetch(SERVER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, message })
+    });
 
-      if (response.ok) {
-        alert("Сообщение успешно отправлено!");
-        document.getElementById('name').value = "";
-        document.getElementById('phone').value = "";
-      } else {
-        alert("Ошибка при отправке сообщения.");
-      }
-    } catch (error) {
-      alert("Ошибка подключения к серверу.");
+    if (response.ok) {
+      alert("Сообщение успешно отправлено!");
+    } else {
+      alert("Ошибка при отправке сообщения.");
     }
-  });
+  } catch (error) {
+    alert("Ошибка подключения к серверу.");
+  }
+});
+
 </script>
 </body>
 </html>
