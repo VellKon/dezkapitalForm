@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,25 +17,37 @@
 </div>
 
 <script>
-  const TOKEN = '7281183474:AAFrhhrbnHd439p_hibSDEi5aHBawDQzIBE';
-  const CHAT_ID = '-1002367827109';
-  const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
-  document.getElementById('telegram-form').addEventListener('submit', function(event) {
+  const SERVER_URL = "bot-production-57ca.up.railway.app/send-message";
+
+  document.getElementById('telegram-form').addEventListener('submit', async function(event) {
     event.preventDefault();
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
-    const message = `Новая заявка с сайта:\nИмя: ${name}\nТелефон: ${phone}`;
 
-    fetch(URL_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-    })
-    .then((res) =>{
+    const requestBody = {
+      name: name,
+      phone: phone,
+    };
+
+    try {
+      const response = await fetch(SERVER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (response.ok) {
+        alert("Сообщение успешно отправлено!");
         document.getElementById('name').value = "";
         document.getElementById('phone').value = "";
-    })});
+      } else {
+        alert("Ошибка при отправке сообщения.");
+      }
+    } catch (error) {
+      alert("Ошибка подключения к серверу.");
+    }
+  });
 </script>
 </body>
 </html>
