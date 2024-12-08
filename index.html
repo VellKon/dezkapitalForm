@@ -9,41 +9,47 @@
 <body>
 <div class="container">
   <form id="telegram-form">
-    <p>Заполните форму №40</p>
+    <p id="form-title">Заполните форму 44</p>
     <input type="text" id="name" placeholder="Ваше имя" required><br>
     <input type="tel" id="phone" placeholder="Ваш номер телефона" required><br>
     <input type="submit" value="Отправить"><br>
+    <p id="success-message" style="display: none; color: green;">Заявка успешно принята!</p>
   </form>
 </div>
 
 <script>
+  const SERVER_URL = "https://bot-production-57ca.up.railway.app/send-message";
 
-const SERVER_URL = "https://bot-production-57ca.up.railway.app/send-message";
+  document.getElementById('telegram-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-document.getElementById('telegram-form').addEventListener('submit', async function(event) {
-  event.preventDefault();
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const successMessage = document.getElementById('success-message');
 
-  const name = document.getElementById('name').value;
-  const phone = document.getElementById('phone').value;
-  const message = "Сообщение с формы";
+    try {
+      const response = await fetch(SERVER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone })
+      });
 
-  try {
-    const response = await fetch(SERVER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, message })
-    });
-
-    if (response.ok) {
-      alert("Сообщение успешно отправлено!");
-    } else {
-      alert("Ошибка при отправке сообщения.");
+      if (response.ok) {
+        // Показываем сообщение о принятии заявки
+        successMessage.style.display = "block";
+        
+        // Очищаем поля формы
+        document.getElementById('name').value = "";
+        document.getElementById('phone').value = "";
+      } else {
+        // Если ошибка, форма остаётся без изменений
+        successMessage.style.display = "none";
+      }
+    } catch (error) {
+      // Если ошибка подключения, форма остаётся без изменений
+      successMessage.style.display = "none";
     }
-  } catch (error) {
-    alert("Ошибка подключения к серверу.");
-  }
-});
-
+  });
 </script>
 </body>
 </html>
