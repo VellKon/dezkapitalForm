@@ -9,7 +9,7 @@
 <body>
 <div class="container">
   <form id="telegram-form">
-    <p id="form-title">Заполните форму 44</p>
+    <p id="form-title">Заполните форму 47</p>
     <input type="text" id="name" placeholder="Ваше имя" required><br>
     <input type="tel" id="phone" placeholder="Ваш номер телефона" required><br>
     <input type="submit" value="Отправить"><br>
@@ -42,11 +42,11 @@
         document.getElementById('name').value = "";
         document.getElementById('phone').value = "";
       } else {
-        // Если ошибка, форма остаётся без изменений
+        // Ничего не происходит при ошибке
         successMessage.style.display = "none";
       }
     } catch (error) {
-      // Если ошибка подключения, форма остаётся без изменений
+      // Ничего не происходит при ошибке подключения
       successMessage.style.display = "none";
     }
   });
